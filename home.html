@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="{ moreOpen: false }" @click.away="moreOpen = false">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Sidebar and Bottom Navigation</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Responsive Layout</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body class="flex flex-col min-h-screen bg-gray-100">
 
-  <!-- Main Layout Wrapper -->
+  <!-- Layout Wrapper -->
   <div class="flex flex-1">
 
-    <!-- Sidebar for large screens -->
+    <!-- Sidebar for desktop -->
     <aside class="hidden md:flex md:flex-col w-64 bg-white shadow-lg h-screen fixed md:relative z-10">
       <div class="p-4 font-bold text-lg border-b">Dashboard</div>
       <nav class="flex-1 p-4">
@@ -20,6 +21,9 @@
           <li><a href="/orders" class="block text-gray-700 hover:text-blue-500">Orders</a></li>
           <li><a href="/products" class="block text-gray-700 hover:text-blue-500">Products</a></li>
           <li><a href="/customers" class="block text-gray-700 hover:text-blue-500">Customers</a></li>
+          <li><a href="/settings" class="block text-gray-700 hover:text-blue-500">Settings</a></li>
+          <li><a href="/profile" class="block text-gray-700 hover:text-blue-500">Profile</a></li>
+          <li><a href="/logout" class="block text-gray-700 hover:text-blue-500">Logout</a></li>
         </ul>
       </nav>
     </aside>
@@ -31,13 +35,30 @@
     </main>
   </div>
 
-  <!-- Bottom Navigation for small devices -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-inner border-t">
-    <ul class="flex justify-around p-2 text-sm text-gray-700">
-      <li><a href="/dashboard" class="flex flex-col items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7m-9 2v6m0 0H5a2 2 0 01-2-2v-4m16 6v-6m0 0l2 2m-2-2l-7-7" /></svg>Home</a></li>
-      <li><a href="/orders" class="flex flex-col items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h13v6M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>Orders</a></li>
-      <li><a href="/products" class="flex flex-col items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0l-8 5-8-5" /></svg>Products</a></li>
-      <li><a href="/customers" class="flex flex-col items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A8.962 8.962 0 0012 20a8.962 8.962 0 006.879-2.196M15 10a3 3 0 01-6 0 3 3 0 016 0z" /></svg>Customers</a></li>
+  <!-- Bottom nav for mobile -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white shadow-inner border-t z-50">
+    <ul class="flex justify-around p-2 text-sm text-gray-700 relative">
+      <li><a href="/dashboard" class="flex flex-col items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 12l2-2m0 0l7-7 7 7m-9 2v6m0 0H5a2 2 0 01-2-2v-4m16 6v-6m0 0l2 2m-2-2l-7-7"/></svg>Home</a></li>
+      <li><a href="/orders" class="flex flex-col items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>Orders</a></li>
+      <li><a href="/products" class="flex flex-col items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0l-8 5-8-5"/></svg>Products</a></li>
+      <li><a href="/customers" class="flex flex-col items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M5.121 17.804A8.962 8.962 0 0012 20a8.962 8.962 0 006.879-2.196M15 10a3 3 0 01-6 0 3 3 0 016 0z"/></svg>Customers</a></li>
+
+      <!-- More Dropdown -->
+      <li class="relative" x-data="{ open: false }">
+        <button @click="open = !open" class="flex flex-col items-center focus:outline-none">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6 10h.01M12 10h.01M18 10h.01"/></svg>
+          More
+        </button>
+        <div
+          x-show="open"
+          x-transition
+          class="absolute bottom-12 right-0 bg-white border rounded-lg shadow-lg w-40 py-2 z-50"
+        >
+          <a href="/settings" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
+          <a href="/profile" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+          <a href="/logout" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+        </div>
+      </li>
     </ul>
   </nav>
 
